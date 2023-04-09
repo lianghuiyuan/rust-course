@@ -184,7 +184,7 @@ println!("{:?}", user1);
 上面定义的 `File` 结构体在内存中的排列如下图所示：
 <img alt="" src="https://pic3.zhimg.com/80/v2-8cc4ed8cd06d60f974d06ca2199b8df5_1440w.png" class="center"  />
 
-从图中可以清晰的看出 `File` 结构体两个字段 `name` 和 `data` 分别拥有底层两个 `[u8]` 数组的所有权(`String` 类型的底层也是 `[u8]` 数组)，通过 `ptr` 指针指向底层数组的内存地址，这里你可以把 `ptr` 指针理解为 Rust 中的引用类型。
+从图中可以清晰地看出 `File` 结构体两个字段 `name` 和 `data` 分别拥有底层两个 `[u8]` 数组的所有权(`String` 类型的底层也是 `[u8]` 数组)，通过 `ptr` 指针指向底层数组的内存地址，这里你可以把 `ptr` 指针理解为 Rust 中的引用类型。
 
 该图片也侧面印证了：**把结构体中具有所有权的字段转移出去后，将无法再访问该字段，但是可以正常访问其它的字段**。
 
@@ -223,7 +223,7 @@ impl SomeTrait for AlwaysEqual {
 
 在之前的 `User` 结构体的定义中，有一处细节：我们使用了自身拥有所有权的 `String` 类型而不是基于引用的 `&str` 字符串切片类型。这是一个有意而为之的选择：因为我们想要这个结构体拥有它所有的数据，而不是从其它地方借用数据。
 
-你也可以让 `User` 结构体从其它对象借用数据，不过这么做，就需要引入[生命周期(lifetimes)](https://course.rs/advance/lifetime/basic.html)这个新概念（也是一个复杂的概念），简而言之，生命周期能确保结构体的作用范围要比它所借用的数据的作用范围要小。
+你也可以让 `User` 结构体从其它对象借用数据，不过这么做，就需要引入[生命周期(lifetimes)](https://course.rs/basic/lifetime.html)这个新概念（也是一个复杂的概念），简而言之，生命周期能确保结构体的作用范围要比它所借用的数据的作用范围要小。
 
 总之，如果你想在结构体中使用一个引用，就必须加上生命周期，否则就会报错：
 
@@ -274,7 +274,7 @@ help: consider introducing a named lifetime parameter
   |
 ```
 
-未来在[生命周期](https://course.rs/advance/lifetime/basic.html)中会讲到如何修复这个问题以便在结构体中存储引用，不过在那之前，我们会避免在结构体中使用引用类型。
+未来在[生命周期](https://course.rs/basic/lifetime.html)中会讲到如何修复这个问题以便在结构体中存储引用，不过在那之前，我们会避免在结构体中使用引用类型。
 
 ## 使用 `#[derive(Debug)]` 来打印结构体的信息
 
@@ -389,7 +389,7 @@ rect1 is Rectangle {
 
 还有一个简单的输出 debug 信息的方法，那就是使用 [`dbg!` 宏](https://doc.rust-lang.org/std/macro.dbg.html)，它会拿走表达式的所有权，然后打印出相应的文件名、行号等 debug 信息，当然还有我们需要的表达式的求值结果。**除此之外，它最终还会把表达式值的所有权返回！**
 
-> `dbg!` 输出到标准错误输出 `stderr`，而 `println!` 输出到标准输出 `stdout`
+> `dbg!` 输出到标准错误输出 `stderr`，而 `println!` 输出到标准输出 `stdout`。
 
 下面的例子中清晰的展示了 `dbg!` 如何在打印出信息的同时，还把表达式的值赋给了 `width`:
 

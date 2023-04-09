@@ -5,7 +5,7 @@ title = "Rust语言圣经(Rust Course)"
 src = "src"
 
 [output.html]
-additional-css = ["theme/style3.css"]
+additional-css = ["theme/style.css"]
 additional-js = ["assets/custom.js", "assets/bigPicture.js"]
 git-repository-url = "https://github.com/sunface/rust-course"
 edit-url-template = "https://github.com/sunface/rust-course/edit/main/{path}"
@@ -17,7 +17,7 @@ copy-js = true
 
 [output.html.fold]
 enable = true
-level = 1
+level = 0
 
 [rust]
 edition = "2021"   #在线运行用2021版本的

@@ -8,7 +8,7 @@ Rust 中哈希类型（哈希映射）为 `HashMap<K,V>`，在其它语言中，
 
 跟创建动态数组 `Vec` 的方法类似，可以使用 `new` 方法来创建 `HashMap`，然后通过 `insert` 方法插入键值对。
 
-#### 使用 new 方法创建
+### 使用 new 方法创建
 
 ```rust
 use std::collections::HashMap;
@@ -28,9 +28,9 @@ my_gems.insert("河边捡的误以为是宝石的破石头", 18);
 
 所有的集合类型都是动态的，意味着它们没有固定的内存大小，因此它们底层的数据都存储在内存堆上，然后通过一个存储在栈中的引用类型来访问。同时，跟其它集合类型一致，`HashMap` 也是内聚性的，即所有的 `K` 必须拥有同样的类型，`V` 也是如此。
 
-> 跟 `Vec` 一样，如果预先知道要存储的 `KV` 对个数，可以使用 `HashMap::with_capacity(capacity)` 创建指定大小的 `HashMap`，避免频繁的内存分配和拷贝，提升性能
+> 跟 `Vec` 一样，如果预先知道要存储的 `KV` 对个数，可以使用 `HashMap::with_capacity(capacity)` 创建指定大小的 `HashMap`，避免频繁的内存分配和拷贝，提升性能。
 
-#### 使用迭代器和 collect 方法创建
+### 使用迭代器和 collect 方法创建
 
 在实际使用中，不是所有的场景都能 `new` 一个哈希表后，然后悠哉悠哉的依次插入对应的键值对，而是可能会从另外一个数据结构中，获取到对应的数据，最终生成 `HashMap`。
 
@@ -74,7 +74,7 @@ fn main() {
     ];
 
     let teams_map: HashMap<_,_> = teams_list.into_iter().collect();
-
+    
     println!("{:?}",teams_map)
 }
 ```
@@ -90,6 +90,7 @@ error[E0282]: type annotations needed // 需要类型标注
 10 |     let teams_map = teams_list.into_iter().collect();
    |         ^^^^^^^^^ consider giving `teams_map` a type // 给予 `teams_map` 一个具体的类型
 ```
+
 
 ## 所有权转移
 
@@ -186,6 +187,15 @@ let score: Option<&i32> = scores.get(&team_name);
 - `get` 方法返回一个 `Option<&i32>` 类型：当查询不到时，会返回一个 `None`，查询到时返回 `Some(&i32)`
 - `&i32` 是对 `HashMap` 中值的借用，如果不使用借用，可能会发生所有权的转移
 
+还可以继续拓展下，上面的代码中，如果我们想直接获得值类型的 `score` 该怎么办，答案简约但不简单:
+
+```rust
+let score: i32 = scores.get(&team_name).copied().unwrap_or(0);
+```
+
+这里留给大家一个小作业: 去官方文档中查询下 `Option` 的 `copied` 方法和 `unwrap_or` 方法的含义及该如何使用。
+
+
 还可以通过循环的方式依次遍历 `KV` 对：
 
 ```rust
@@ -272,7 +282,7 @@ println!("{:?}", map);
 
 先来设想下，如果要实现 `Key` 与 `Value` 的一一对应，是不是意味着我们要能比较两个 `Key` 的相等性？例如 "a" 和 "b"，1 和 2，当这些类型做 `Key` 且能比较时，可以很容易知道 `1` 对应的值不会错误的映射到 `2` 上，因为 `1` 不等于 `2`。因此，一个类型能否作为 `Key` 的关键就是是否能进行相等比较，或者说该类型是否实现了 `std::cmp::Eq` 特征。
 
-> f32 和 f64 浮点数，没有实现 `std::cmp::Eq` 特征，因此不可以用作 `HashMap` 的 `Key`
+> f32 和 f64 浮点数，没有实现 `std::cmp::Eq` 特征，因此不可以用作 `HashMap` 的 `Key`。
 
 好了，理解完这个，再来设想一点，若一个复杂点的类型作为 `Key`，那怎么在底层对它进行存储，怎么使用它进行查询和比较？ 是不是很棘手？好在我们有哈希函数：通过它把 `Key` 计算后映射为哈希值，然后使用该哈希值来进行存储、查询、比较等操作。
 
@@ -297,7 +307,7 @@ hash.insert(42, "the answer");
 assert_eq!(hash.get(&42), Some(&"the answer"));
 ```
 
-> 目前，`HashMap` 使用的哈希函数是 `SipHash`，它的性能不是很高，但是安全性很高。`SipHash` 在中等大小的 `Key` 上，性能相当不错，但是对于小型的 `Key` （例如整数）或者大型 `Key` （例如字符串）来说，性能还是不够好。若你需要极致性能，例如实现算法，可以考虑这个库：[ahash](https://github.com/tkaitchuck/ahash)
+> 目前，`HashMap` 使用的哈希函数是 `SipHash`，它的性能不是很高，但是安全性很高。`SipHash` 在中等大小的 `Key` 上，性能相当不错，但是对于小型的 `Key` （例如整数）或者大型 `Key` （例如字符串）来说，性能还是不够好。若你需要极致性能，例如实现算法，可以考虑这个库：[ahash](https://github.com/tkaitchuck/ahash)。
 
 最后，如果你想要了解 `HashMap` 更多的用法，请参见本书的标准库解析章节：[HashMap 常用方法](https://course.rs/std/hashmap.html)
 

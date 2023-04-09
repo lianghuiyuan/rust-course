@@ -30,7 +30,7 @@
 
 - **规避陷阱和对抗编译器**，只有真的上手写过一长段时间 Rust 项目，才知道该如何规避常见的陷阱以及解决一些难搞的编译器错误，而本书将帮助你大大缩短这个过程，提前规避这些问题
 
-- **[Cookbook](https://rusty.rs)**，涵盖多个应用场景的实战代码片段，程序员上网查询文件操作、正则解析、数据库操作是常事，没有人能记住所有代码，而 Cookbook 可解君忧，Ctrl + C/V 走天下
+- **[Cookbook](https://rustwiki.org/zh-CN/rust-cookbook/)**，涵盖多个应用场景的实战代码片段，程序员上网查询文件操作、正则解析、数据库操作是常事，没有人能记住所有代码，而 Cookbook 可解君忧，Ctrl + C/V 走天下
 
 - **[配套练习题](https://github.com/sunface/rust-by-practice)**，像学习一门大学课程一样学习 Rust 是一种什么感觉？_Rust 语言圣经 + Rust 语言实战_ 双剑合璧，给你最极致的学习体验
 
@@ -98,10 +98,10 @@
             </a>
         </td>
         <td align="center">
-            <a href="https://github.com/Mintnoii">
-                <img src="https://avatars.githubusercontent.com/u/30466018?v=4?s=100" width="100px" alt=""/>
+            <a href="https://github.com/EluvK">
+                <img src=https://avatars.githubusercontent.com/u/36977935?v=4" width="100px" alt=""/>
                 <br />
-                <sub><b>Mintnoii</b></sub>
+                <sub><b>Eucalypt</b></sub>
             </a>
         </td>
     </tr>

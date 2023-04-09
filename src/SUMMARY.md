@@ -1,17 +1,21 @@
 # Rust 语言圣经
 
-[Rust 语言圣经](about-book.md)
+[关于本书](about-book.md)
 [进入 Rust 编程世界](into-rust.md)
-[快速查询入口](index-list.md)
+[避免从入门到放弃](first-try/sth-you-should-not-do.md)
+<!-- [快速查询入口](index-list.md) 暂时屏蔽-->
+[社区和锈书](community.md)
 
----
 
-[Rust 语言中文网](community.md)
-[一本生锈的书](rusty-book.md)
-[Rust 语言周刊](rust-weekly.md)
-[Rust 翻译计划( 代号 Rustt )](rustt.md)
 
-# 快速开始
+<!-- [一本生锈的书](rusty-book.md) -->
+<!-- [Rust 语言周刊](rust-weekly.md) -->
+<!-- [Rust 翻译计划( 代号 Rustt )](rustt.md) -->
+
+
+
+
+# Rust 语言基础学习
 
 ---
 
@@ -21,11 +25,7 @@
   - [认识 Cargo](first-try/cargo.md)
   - [不仅仅是 Hello world](first-try/hello-world.md)
   - [下载依赖太慢了？](first-try/slowly-downloading.md)
-  - [避免从入门到放弃](first-try/sth-you-should-not-do.md)
 
-# Rust 语言学习
-
----
 
 - [Rust 基础入门](basic/intro.md)
 
@@ -59,7 +59,7 @@
   - [集合类型](basic/collections/intro.md)
     - [动态数组 Vector](basic/collections/vector.md)
     - [KV 存储 HashMap](basic/collections/hashmap.md)
-  - [类型转换](basic/converse.md)
+  - [认识生命周期](basic/lifetime.md)
   - [返回值和错误处理](basic/result-error/intro.md)
     - [panic! 深入剖析](basic/result-error/panic.md)
     - [返回值 Result 和?](basic/result-error/result.md)
@@ -69,11 +69,20 @@
     - [使用 use 引入模块及受限可见性](basic/crate-module/use.md)
   - [注释和文档](basic/comment.md)
   - [格式化输出](basic/formatted-output.md)
+- [入门实战：文件搜索工具](basic-practice/intro.md)
+  - [基本功能](basic-practice/base-features.md)
+  - [增加模块化和错误处理](basic-practice/refactoring.md)
+  - [测试驱动开发](basic-practice/tests.md)
+  - [使用环境变量](basic-practice/envs.md)
+  - [重定向错误信息的输出](basic-practice/stderr.md)
+  - [使用迭代器来改进程序(可选)](basic-practice/iterators.md)
+
+# Rust 语言进阶学习
+
+---
 
 - [Rust 高级进阶](advance/intro.md)
-
   - [生命周期](advance/lifetime/intro.md)
-    - [认识生命周期](advance/lifetime/basic.md)
     - [深入生命周期](advance/lifetime/advance.md)
     - [&'static 和 T: 'static](advance/lifetime/static.md)
     <!-- - [一些关于生命周期的误解 todo](advance/lifetime/misconceptions.md) -->
@@ -81,6 +90,7 @@
     - [闭包 Closure](advance/functional-programing/closure.md)
     - [迭代器 Iterator](advance/functional-programing/iterator.md)
   - [深入类型](advance/into-types/intro.md)
+    - [类型转换](advance/into-types/converse.md)
     - [newtype 和 类型别名](advance/into-types/custom-type.md)
     - [Sized 和不定长类型 DST](advance/into-types/sized.md)
     - [枚举和整数](advance/into-types/enum-int.md)
@@ -100,39 +110,43 @@
     - [线程同步：锁、Condvar 和信号量](advance/concurrency-with-threads/sync1.md)
     - [线程同步：Atomic 原子操作与内存顺序](advance/concurrency-with-threads/sync2.md)
     - [基于 Send 和 Sync 的线程安全](advance/concurrency-with-threads/send-sync.md)
-    - [实践应用：多线程 Web 服务器 todo](advance/concurrency-with-threads/web-server.md)
   - [全局变量](advance/global-variable.md)
   - [错误处理](advance/errors.md)
   - [Unsafe Rust](advance/unsafe/intro.md)
     - [五种兵器](advance/unsafe/superpowers.md)
-    - [内联汇编 todo](advance/unsafe/inline-asm.md)
+    - [内联汇编](advance/unsafe/inline-asm.md)
   - [Macro 宏编程](advance/macro.md)
     <!-- - [SIMD todo](advance/simd.md) -->
     <!-- - [高阶特征约束(HRTB) todo](advance/hrtb.md) -->
+  - [async/await 异步编程](advance/async/intro.md)
+    - [async 编程入门](advance/async/getting-started.md)
+    - [底层探秘: Future 执行与任务调度](advance/async/future-excuting.md)
+    - [定海神针 Pin 和 Unpin](advance/async/pin-unpin.md)
+    - [async/await 和 Stream 流处理](advance/async/async-await.md)
+    - [同时运行多个 Future](advance/async/multi-futures-simultaneous.md)
+    - [一些疑难问题的解决办法](advance/async/pain-points-and-workarounds.md)
+    - [实践应用：Async Web 服务器](advance/async/web-server.md)
 
-- [Rust 异步编程](async-rust/intro.md)
+- [进阶实战1: 实现一个 web 服务器](advance-practice1/intro.md)
+  - [单线程版本](advance-practice1/web-server.md)
+  - [多线程版本](advance-practice1/multi-threads.md)
+  - [优雅关闭和资源清理](advance-practice1/graceful-shutdown.md)
 
-  - [async/await 异步编程](async-rust/async/intro.md)
-    - [async 编程入门](async-rust/async/getting-started.md)
-    - [底层探秘: Future 执行与任务调度](async-rust/async/future-excuting.md)
-    - [定海神针 Pin 和 Unpin](async-rust/async/pin-unpin.md)
-    - [async/await 和 Stream 流处理](async-rust/async/async-await.md)
-    - [同时运行多个 Future](async-rust/async/multi-futures-simultaneous.md)
-    - [一些疑难问题的解决办法](async-rust/async/pain-points-and-workarounds.md)
-    - [实践应用：Async Web 服务器](async-rust/async/web-server.md)
-  - [Tokio 使用指南](async-rust/tokio/intro.md)
-    - [tokio 概览](async-rust/tokio/overview.md)
-    - [使用初印象](async-rust/tokio/getting-startted.md)
-    - [创建异步任务](async-rust/tokio/spawning.md)
-    - [共享状态](async-rust/tokio/shared-state.md)
-    - [消息传递](async-rust/tokio/channels.md)
-    - [I/O](async-rust/tokio/io.md)
-    - [解析数据帧](async-rust/tokio/frame.md)
-    - [深入 async](async-rust/tokio/async.md)
-    - [select](async-rust/tokio/select.md)
-    - [类似迭代器的 Stream](async-rust/tokio/stream.md))
-    - [优雅的关闭](async-rust/tokio/graceful-shutdown.md)
-    - [异步跟同步共存](async-rust/tokio/bridging-with-sync.md)
+
+- [进阶实战2: 实现一个简单 Redis](advance-practice/intro.md)
+  - [tokio 概览](advance-practice/overview.md)
+  - [使用初印象](advance-practice/getting-startted.md)
+  - [创建异步任务](advance-practice/spawning.md)
+  - [共享状态](advance-practice/shared-state.md)
+  - [消息传递](advance-practice/channels.md)
+  - [I/O](advance-practice/io.md)
+  - [解析数据帧](advance-practice/frame.md)
+  - [深入 async](advance-practice/async.md)
+  - [select](advance-practice/select.md)
+  - [类似迭代器的 Stream](advance-practice/stream.md))
+  - [优雅的关闭](advance-practice/graceful-shutdown.md)
+  - [异步跟同步共存](advance-practice/bridging-with-sync.md)
+
 
 - [Rust 难点攻关](difficulties/intro.md)
   - [切片和切片引用](difficulties/slice.md)
@@ -234,7 +248,7 @@
     - [双单向链表](too-many-lists/advanced-lists/double-singly.md)
     - [栈上的链表](too-many-lists/advanced-lists/stack-allocated.md)
 
-# 高级专题
+# 攻克编译错误
 
 ---
 
@@ -264,6 +278,10 @@
     - [线程间传递消息导致主线程无法结束](compiler/pitfalls/main-with-channel-blocked.md)
     - [警惕 UTF-8 引发的性能隐患](compiler/pitfalls/utf8-performance.md)
 
+# 性能优化
+
+---
+
 - [Rust 性能优化 todo](profiling/intro.md)
 
   - [深入内存 todo](profiling/memory/intro.md)
@@ -291,12 +309,14 @@
     - [编译器优化 todo](profiling/compiler/optimization/intro.md)
       - [Option 枚举 todo](profiling/compiler/optimization/option.md)
 
-- [标准库解析 todo](std/intro.md)
 
-  - [标准库使用最佳时间 todo](std/search.md)
+
+<!-- - [标准库解析 todo](std/intro.md)
+
+  - [标准库使用最佳实践 todo](std/search.md)
   - [Vector 常用方法 todo](std/vector.md)
   - [HashMap todo](std/hashmap.md)
-  - [Iterator 常用方法 todo](std/iterator.md)
+  - [Iterator 常用方法 todo](std/iterator.md) -->
 
   <!-- - [配置文件解析 todo](cookbook/config.md)
   - [编解码 todo](cookbook/encoding/intro.md)
@@ -342,3 +362,9 @@
     - [1.60](appendix/rust-versions/1.60.md)
     - [1.61](appendix/rust-versions/1.61.md)
     - [1.62](appendix/rust-versions/1.62.md)
+    - [1.63](appendix/rust-versions/1.63.md)
+    - [1.64](appendix/rust-versions/1.64.md)
+    - [1.65](appendix/rust-versions/1.65.md)
+    - [1.66](appendix/rust-versions/1.66.md)
+    - [1.67](appendix/rust-versions/1.67.md)
+    - [1.68](appendix/rust-versions/1.68.md)

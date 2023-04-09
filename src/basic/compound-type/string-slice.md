@@ -95,7 +95,7 @@ let slice = &s[..];
 > ```
 >
 > 因为我们只取 `s` 字符串的前两个字节，但是本例中每个汉字占用三个字节，因此没有落在边界处，也就是连 `中` 字都取不完整，此时程序会直接崩溃退出，如果改成 `&s[0..3]`，则可以正常通过编译。
-> 因此，当你需要对字符串做切片索引操作时，需要格外小心这一点, 关于该如何操作 UTF-8 字符串，参见[这里](#操作-utf-8-字符串)
+> 因此，当你需要对字符串做切片索引操作时，需要格外小心这一点, 关于该如何操作 UTF-8 字符串，参见[这里](#操作-utf-8-字符串)。
 
 字符串切片的类型标识是 `&str`，因此我们可以这样声明一个函数，输入 `String` 类型，返回它的切片: `fn first_word(s: &String) -> &str `。
 
@@ -289,19 +289,20 @@ note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 ```rust
 fn main() {
     let mut s = String::from("Hello ");
-    s.push('r');
-    println!("追加字符 push() -> {}", s);
 
-    s.push_str("ust!");
+    s.push_str("rust");
     println!("追加字符串 push_str() -> {}", s);
+
+    s.push('!');
+    println!("追加字符 push() -> {}", s);
 }
 ```
 
 代码运行结果：
 
 ```console
-追加字符 push() -> Hello r
-追加字符串 push_str() -> Hello rust!
+追加字符串 push_str() -> Hello rust
+追加字符 push() -> Hello rust!
 ```
 
 #### 插入 (Insert)
@@ -705,7 +706,7 @@ for b in "中国人".bytes() {
 
 与其它系统编程语言的 `free` 函数相同，Rust 也提供了一个释放内存的函数： `drop`，但是不同的是，其它语言要手动调用 `free` 来释放每一个变量占用的内存，而 Rust 则在变量离开作用域时，自动调用 `drop` 函数: 上面代码中，Rust 在结尾的 `}` 处自动调用 `drop`。
 
-> 其实，在 C++ 中，也有这种概念: _Resource Acquisition Is Initialization (RAII)_。如果你使用过 RAII 模式的话应该对 Rust 的 `drop` 函数并不陌生
+> 其实，在 C++ 中，也有这种概念: _Resource Acquisition Is Initialization (RAII)_。如果你使用过 RAII 模式的话应该对 Rust 的 `drop` 函数并不陌生。
 
 这个模式对编写 Rust 代码的方式有着深远的影响，在后面章节我们会进行更深入的介绍。
 

@@ -2,9 +2,9 @@
 
 在入门章节中，我们简单学习了该如何使用 `async/.await`， 同时在后面也了解了一些底层原理，现在是时候继续深入了。
 
-`async/.await`是 Rust 语法的一部分，它在遇到阻塞操作时( 例如 IO )会让出当前线程的所有权而不是阻塞当前线程，这样就允许当前线程继续去执行其它代码，最终实现并发。
+`async/.await` 是 Rust 语法的一部分，它在遇到阻塞操作时( 例如 IO )会让出当前线程的所有权而不是阻塞当前线程，这样就允许当前线程继续去执行其它代码，最终实现并发。
 
-有两种方式可以使用`async`： `async fn`用于声明函数，`async { ... }`用于声明语句块，它们会返回一个实现 `Future` 特征的值:
+有两种方式可以使用 `async`： `async fn` 用于声明函数，`async { ... }` 用于声明语句块，它们会返回一个实现 `Future` 特征的值:
 
 ```rust
 // `foo()`返回一个`Future<Output = u8>`,
@@ -22,7 +22,7 @@ fn bar() -> impl Future<Output = u8> {
 
 `async` 是懒惰的，直到被执行器 `poll` 或者 `.await` 后才会开始运行，其中后者是最常用的运行 `Future` 的方法。 当 `.await` 被调用时，它会尝试运行 `Future` 直到完成，但是若该 `Future` 进入阻塞，那就会让出当前线程的控制权。当 `Future` 后面准备再一次被运行时(例如从 `socket` 中读取到了数据)，执行器会得到通知，并再次运行该 `Future` ，如此循环，直到完成。
 
-以上过程只是一个简述，详细内容在[底层探秘](https://course.rs/async-rust/async/future-excuting.html)中已经被深入讲解过，因此这里不再赘述。
+以上过程只是一个简述，详细内容在[底层探秘](https://course.rs/advance/async/future-excuting.html)中已经被深入讲解过，因此这里不再赘述。
 
 ## `async` 的生命周期
 
@@ -37,7 +37,7 @@ fn foo_expanded<'a>(x: &'a u8) -> impl Future<Output = u8> + 'a {
 }
 ```
 
-意味着 `async fn` 函数返回的 `Future` 必须满足以下条件: 当 `x` 依然有效时， 该 `Future` 就必须继续等待( `.await` ), 也就是说`x` 必须比 `Future`活得更久。
+意味着 `async fn` 函数返回的 `Future` 必须满足以下条件: 当 `x` 依然有效时， 该 `Future` 就必须继续等待( `.await` ), 也就是说 `x` 必须比 `Future` 活得更久。
 
 在一般情况下，在函数调用后就立即 `.await` 不会存在任何问题，例如`foo(&x).await`。但是，若 `Future` 被先存起来或发送到另一个任务或者线程，就可能存在问题了:
 
@@ -108,7 +108,7 @@ async fn blocks() {
 
 
 
-// 由于`async move`会捕获环境中的变量，因此只有一个`async move`语句块可以访问该变量，
+// 由于 `async move` 会捕获环境中的变量，因此只有一个 `async move` 语句块可以访问该变量，
 // 但是它也有非常明显的好处： 变量可以转移到返回的 Future 中，不再受借用生命周期的限制
 fn move_block() -> impl Future<Output = ()> {
     let my_string = "foo".to_string();
@@ -147,7 +147,7 @@ trait Stream {
 }
 ```
 
-关于 `Stream` 的一个常见例子是消息通道（ `futures` 包中的）的消费者 `Receiver`。每次有消息从 `Send` 端发送后，它都可以接收到一个 `Some(val)` 值， 一旦 `Send` 端关闭(drop)，且消息通道中没有消息后，它会接收到一个 `None` 值。
+关于 `Stream` 的一个常见例子是消息通道（ `futures` 包中的）的消费者 `Receiver`。每次有消息从 `Send` 端发送后，它都可以接收到一个 `Some(val)` 值， 一旦 `Send` 端关闭( `drop` )，且消息通道中没有消息后，它会接收到一个 `None` 值。
 
 ```rust
 async fn send_recv() {
@@ -168,7 +168,7 @@ async fn send_recv() {
 
 #### 迭代和并发
 
-跟迭代器类似，我们也可以迭代一个 `Stream`。 例如使用`map`，`filter`，`fold`方法，以及它们的*遇到错误提前返回*的版本： `try_map`，`try_filter`，`try_fold`。
+跟迭代器类似，我们也可以迭代一个 `Stream`。 例如使用 `map`，`filter`，`fold` 方法，以及它们的*遇到错误提前返回*的版本： `try_map`，`try_filter`，`try_fold`。
 
 但是跟迭代器又有所不同，`for` 循环无法在这里使用，但是命令式风格的循环`while let`是可以用的，同时还可以使用`next` 和 `try_next` 方法:
 

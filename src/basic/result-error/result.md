@@ -13,7 +13,7 @@ enum Result<T, E> {
 }
 ```
 
-泛型参数 `T` 代表成功时存入的正确值的类型，存放方式是 `Ok(T)`，`E` 代表错误是存入的错误值，存放方式是 `Err(E)`，枯燥的讲解永远不及代码生动准确，因此先来看下打开文件的例子：
+泛型参数 `T` 代表成功时存入的正确值的类型，存放方式是 `Ok(T)`，`E` 代表错误时存入的错误值，存放方式是 `Err(E)`，枯燥的讲解永远不及代码生动准确，因此先来看下打开文件的例子：
 
 ```rust
 use std::fs::File;
@@ -340,6 +340,21 @@ fn main() {
 }
 ```
 
+运行后会报错:
+```shell
+$ cargo run
+   ...
+   the `?` operator can only be used in a function that returns `Result` or `Option` (or another type that implements `FromResidual`)
+ --> src/main.rs:4:48
+  |
+3 | fn main() {
+  | --------- this function should return `Result` or `Option` to accept `?`
+4 |     let greeting_file = File::open("hello.txt")?;
+  |                                                ^ cannot use the `?` operator in a function that returns `()`
+  |
+  = help: the trait `FromResidual<Result<Infallible, std::io::Error>>` is not implemented for `()`
+```
+
 因为 `?` 要求 `Result<T, E>` 形式的返回值，而 `main` 函数的返回是 `()`，因此无法满足，那是不是就无解了呢？
 
 实际上 Rust 还支持另外一种形式的 `main` 函数：
@@ -388,4 +403,4 @@ let x = try!(function_with_error());
 
 ## 课后练习
 
-> [Rust By Practice](https://zh.practice.rs/result-panic/result.html)，支持代码在线编辑和运行，并提供详细的[习题解答](https://github.com/sunface/rust-by-practice)。
+> [Rust By Practice](https://zh.practice.rs/result-panic/result.html)，支持代码在线编辑和运行，并提供详细的[习题解答](https://github.com/sunface/rust-by-practice/blob/master/solutions/result-panic/result.md)。

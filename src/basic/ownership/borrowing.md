@@ -148,7 +148,7 @@ error[E0499]: cannot borrow `s` as mutable more than once at a time 同一时间
   |                        -- first borrow later used here 第一个借用在这里使用
 ```
 
-这段代码出错的原因在于，第一个可变借用 `r1` 必须要持续到最后一次使用的位置 `println!`，在 `r1` 创建和最后一次使用之间，我们又尝试创建第二个可变引用 `r2`。
+这段代码出错的原因在于，第一个可变借用 `r1` 必须要持续到最后一次使用的位置 `println!`，在 `r1` 创建和最后一次使用之间，我们又尝试创建第二个可变借用 `r2`。
 
 对于新手来说，这个特性绝对是一大拦路虎，也是新人们谈之色变的编译器 `borrow checker` 特性之一，不过各行各业都一样，限制往往是出于安全的考虑，Rust 也一样。
 
@@ -270,7 +270,7 @@ help: consider using the `'static` lifetime
 
 ```
 
-错误信息引用了一个我们还未介绍的功能：[生命周期(lifetimes)](https://course.rs/advance/lifetime/basic.html)。不过，即使你不理解生命周期，也可以通过错误信息知道这段代码错误的关键信息：
+错误信息引用了一个我们还未介绍的功能：[生命周期(lifetimes)](https://course.rs/basic/lifetime.html)。不过，即使你不理解生命周期，也可以通过错误信息知道这段代码错误的关键信息：
 
 ```text
 this function's return type contains a borrowed value, but there is no value for it to be borrowed from.
@@ -289,7 +289,7 @@ fn dangle() -> &String { // dangle 返回一个字符串的引用
   // 危险！
 ```
 
-因为 `s` 是在 `dangle` 函数内创建的，当 `dangle` 的代码执行完毕后，`s` 将被释放, 但是此时我们又尝试去返回它的引用。这意味着这个引用会指向一个无效的 `String`，这可不对！
+因为 `s` 是在 `dangle` 函数内创建的，当 `dangle` 的代码执行完毕后，`s` 将被释放，但是此时我们又尝试去返回它的引用。这意味着这个引用会指向一个无效的 `String`，这可不对！
 
 其中一个很好的解决方法是直接返回 `String`：
 
