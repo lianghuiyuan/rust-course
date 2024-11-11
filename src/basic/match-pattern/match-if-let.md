@@ -144,7 +144,7 @@ fn value_in_cents(coin: Coin) -> u8 {
 
 上面代码中，在匹配 `Coin::Quarter(state)` 模式时，我们把它内部存储的值绑定到了 `state` 变量上，因此 `state` 变量就是对应的 `UsState` 枚举类型。
 
-例如有一个印了阿拉斯加州标记的 25 分硬币：`Coin::Quarter(UsState::Alaska)`, 它在匹配时，`state` 变量将被绑定 `UsState::Alaska` 的枚举值。
+例如有一个印了阿拉斯加州标记的 25 分硬币：`Coin::Quarter(UsState::Alaska)`，它在匹配时，`state` 变量将被绑定 `UsState::Alaska` 的枚举值。
 
 再来看一个更复杂的例子：
 
@@ -236,7 +236,7 @@ error[E0004]: non-exhaustive patterns: `West` not covered // 非穷尽匹配，`
    = note: the matched value is of type `Direction`
 ```
 
-不禁想感叹，Rust 的编译器**真强大**，忍不住想爆粗口了，sorry，如果你以后进一步深入使用 Rust 也会像我这样感叹的。Rust 编译器清晰地知道 `match` 中有哪些分支没有被覆盖, 这种行为能强制我们处理所有的可能性，有效避免传说中价值**十亿美金**的 `null` 陷阱。
+不禁想感叹，Rust 的编译器**真强大**，忍不住想爆粗口了，sorry，如果你以后进一步深入使用 Rust 也会像我这样感叹的。Rust 编译器清晰地知道 `match` 中有哪些分支没有被覆盖，这种行为能强制我们处理所有的可能性，有效避免传说中价值**十亿美金**的 `null` 陷阱。
 
 #### `_` 通配符
 
@@ -254,6 +254,26 @@ match some_u8_value {
 ```
 
 通过将 `_` 其放置于其他分支后，`_` 将会匹配所有遗漏的值。`()` 表示返回**单元类型**与所有分支返回值的类型相同，所以当匹配到 `_` 后，什么也不会发生。
+
+除了`_`通配符，用一个变量来承载其他情况也是可以的。
+
+```rust
+#[derive(Debug)]
+enum Direction {
+    East,
+    West,
+    North,
+    South,
+}
+
+fn main() {
+    let dire = Direction::South;
+    match dire {
+        Direction::East => println!("East"),
+        other => println!("other direction: {:?}", other),
+    };
+}
+```
 
 然而，在某些场景下，我们其实只关心**某一个值是否存在**，此时 `match` 就显得过于啰嗦。
 
@@ -320,9 +340,9 @@ let bar = Some(4);
 assert!(matches!(bar, Some(x) if x > 2));
 ```
 
-## 变量覆盖
+## 变量遮蔽
 
-无论是 `match` 还是 `if let`，他们都可以在模式匹配时覆盖掉老的值，绑定新的值:
+无论是 `match` 还是 `if let`，这里都是一个新的代码块，而且这里的绑定相当于新变量，如果你使用同名变量，会发生变量遮蔽：
 
 ```rust
 fn main() {
@@ -344,7 +364,7 @@ fn main() {
 在匹配后，age是Some(30)
 ```
 
-可以看出在 `if let` 中，`=` 右边 `Some(i32)` 类型的 `age` 被左边 `i32` 类型的新 `age` 覆盖了，该覆盖一直持续到 `if let` 语句块的结束。因此第三个 `println!` 输出的 `age` 依然是 `Some(i32)` 类型。
+可以看出在 `if let` 中，`=` 右边 `Some(i32)` 类型的 `age` 被左边 `i32` 类型的新 `age` 遮蔽了，该遮蔽一直持续到 `if let` 语句块的结束。因此第三个 `println!` 输出的 `age` 依然是 `Some(i32)` 类型。
 
 对于 `match` 类型也是如此:
 
@@ -360,9 +380,21 @@ fn main() {
 }
 ```
 
-需要注意的是，**`match` 中的变量覆盖其实不是那么的容易看出**，因此要小心！
+需要注意的是，**`match` 中的变量遮蔽其实不是那么的容易看出**，因此要小心！其实这里最好不要使用同名，避免难以理解，如下。
+
+```rust
+fn main() {
+   let age = Some(30);
+   println!("在匹配前，age是{:?}", age);
+   match age {
+       Some(x) =>  println!("匹配出来的age是{}", x),
+       _ => ()
+   }
+   println!("在匹配后，age是{:?}", age);
+}
+```
 
 
 ## 课后练习
 
-> [Rust By Practice](https://zh.practice.rs/pattern-match/match-iflet.html)，支持代码在线编辑和运行，并提供详细的[习题解答](https://github.com/sunface/rust-by-practice/blob/master/solutions/pattern-match/match.md)。
+> [Rust By Practice](https://practice-zh.course.rs/pattern-match/match-iflet.html)，支持代码在线编辑和运行，并提供详细的[习题解答](https://github.com/sunface/rust-by-practice/blob/master/solutions/pattern-match/match.md)。

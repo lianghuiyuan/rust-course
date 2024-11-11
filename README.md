@@ -30,41 +30,34 @@
 
 - **规避陷阱和对抗编译器**，只有真的上手写过一长段时间 Rust 项目，才知道该如何规避常见的陷阱以及解决一些难搞的编译器错误，而本书将帮助你大大缩短这个过程，提前规避这些问题
 
-- **[Cookbook](https://rustwiki.org/zh-CN/rust-cookbook/)**，涵盖多个应用场景的实战代码片段，程序员上网查询文件操作、正则解析、数据库操作是常事，没有人能记住所有代码，而 Cookbook 可解君忧，Ctrl + C/V 走天下
+- **[Cookbook](https://rusty.course.rs)**，涵盖多个应用场景的实战代码片段，程序员上网查询文件操作、正则解析、数据库操作是常事，没有人能记住所有代码，而 Cookbook 可解君忧，Ctrl + C/V 走天下
 
 - **[配套练习题](https://github.com/sunface/rust-by-practice)**，像学习一门大学课程一样学习 Rust 是一种什么感觉？_Rust 语言圣经 + Rust 语言实战_ 双剑合璧，给你最极致的学习体验
 
 总之在写作过程中我们始终铭记初心：为中国用户打造一门**全面的、深入的、持续更新的** Rust 教程。 新手用来入门，老手用来提高，高手用来提升生产力。
 
-## 🏅 贡献者
+## 🏆 贡献者
 
 非常感谢本教程的[所有贡献者](https://github.com/sunface/rust-course/graphs/contributors)，正是有了你们，才有了现在的高质量 Rust 教程!
 
 <br />
 
-**🏆 贡献榜前三**(根据难易度、贡献次数、活跃度综合评定):
+🏆
 
 <table>
     <tr>
         <td align="center">
-            <a href="https://github.com/sunface">
-                <img src="https://avatars.githubusercontent.com/u/7036754?v=4?s=100" width="160px"   alt=""/>
+            <a href="https://github.com/EluvK">
+                <img src="https://avatars.githubusercontent.com/u/36977935?v=4" width="160px" alt=""/>
                 <br />
-                <sub><b>Sunface 🥇</b></sub>
+                <sub><b>EluvK</b></sub>
             </a>
         </td>
         <td align="center">
             <a href="https://github.com/AllanDowney">
                 <img src="https://avatars.githubusercontent.com/u/82752697?v=4?s=100"  width="160px" alt=""/>
                 <br />
-                <sub><b>AllanDowney 🥈</b></sub>
-            </a>
-        </td>
-        <td align="center">
-            <a href="https://github.com/zongzi531">
-                <img src="https://avatars.githubusercontent.com/u/22429236?v=4?s=100" width="160px" alt=""/>
-                <br />
-                <sub><b>zongzi531 🥉</b></sub>
+                <sub><b>AllanDowney</b></sub>
             </a>
         </td>
     </tr>
@@ -72,10 +65,17 @@
 
 <br />
 
-🏅 核心贡献者:
+🏅
 
 <table>
     <tr>
+        <td align="center">
+            <a href="https://github.com/SUN-LG">
+                <img src="https://avatars.githubusercontent.com/u/15073915?v=4" width="100px" alt=""/>
+                <br />
+                <sub><b>孙立刚</b></sub>
+            </a>
+        </td>
         <td align="center">
             <a href="https://github.com/JesseAtSZ">
                 <img src="https://avatars.githubusercontent.com/u/35264598?v=4?s=100" width="100px" alt=""/>
@@ -95,13 +95,6 @@
                 <img src="https://avatars.githubusercontent.com/u/10138791?v=4?s=100" width="100px" alt=""/>
                 <br />
                 <sub><b>1132719438</b></sub>
-            </a>
-        </td>
-        <td align="center">
-            <a href="https://github.com/EluvK">
-                <img src=https://avatars.githubusercontent.com/u/36977935?v=4" width="100px" alt=""/>
-                <br />
-                <sub><b>Eucalypt</b></sub>
             </a>
         </td>
     </tr>
@@ -141,7 +134,10 @@
 ## 社区 & 读者交流
 
 - 知乎: [孙飞 Sunface](https://www.zhihu.com/people/iSunface)
-- QQ 群 `1009730433`，用于日常技术交流
+- RustCn 微信交流 2 群：<img src="https://github.com/sunface/rust-course/assets/7036754/a84ec7e5-30b1-48da-9352-95503aa61a8f" width="200" /> 
+
+
+
 - 微信公众号: 扫描下面的二维码关注公众号 `Rust语言中文网`
 
 <img src="https://github.com/sunface/rust-course/blob/main/assets/studyrust公众号.png?raw=true" />

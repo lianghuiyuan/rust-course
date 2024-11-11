@@ -47,7 +47,7 @@ fn main() {
 
 ## 泛型详解
 
-上面代码的 `T` 就是**泛型参数**，实际上在 Rust 中，泛型参数的名称你可以任意起，但是出于惯例，我们都用 `T` ( `T` 是 `type` 的首字母)来作为首选，这个名称越短越好，除非需要表达含义，否则一个字母是最完美的。
+上面代码的 `T` 就是**泛型参数**，实际上在 Rust 中，泛型参数的名称你可以任意起，但是出于惯例，我们都用 `T` （`T` 是 `type` 的首字母）来作为首选，这个名称越短越好，除非需要表达含义，否则一个字母是最完美的。
 
 使用泛型参数，有一个先决条件，必需在使用前对其进行声明：
 
@@ -59,7 +59,7 @@ fn largest<T>(list: &[T]) -> T {
 
 总之，我们可以这样理解这个函数定义：函数 `largest` 有泛型类型 `T`，它有个参数 `list`，其类型是元素为 `T` 的数组切片，最后，该函数返回值的类型也是 `T`。
 
-具体的泛型函数实现如下：
+下面是一个错误的泛型函数的实现：
 
 ```rust
 fn largest<T>(list: &[T]) -> T {
@@ -132,6 +132,66 @@ fn add<T: std::ops::Add<Output = T>>(a:T, b:T) -> T {
 ```
 
 进行如上修改后，就可以正常运行。
+
+### 显式地指定泛型的类型参数
+
+有时候，编译器无法推断你想要的泛型参数：
+
+```rust
+use std::fmt::Display;
+
+fn create_and_print<T>() where T: From<i32> + Display {
+    let a: T = 100.into(); // 创建了类型为 T 的变量 a，它的初始值由 100 转换而来
+    println!("a is: {}", a);
+}
+
+fn main() {
+    create_and_print();
+}
+```
+
+如果运行以上代码，会得到报错：
+
+```console
+error[E0283]: type annotations needed // 需要标明类型
+ --> src/main.rs:9:5
+  |
+9 |     create_and_print();
+  |     ^^^^^^^^^^^^^^^^ cannot infer type of the type parameter `T` declared on the function `create_and_print` // 无法推断函数 `create_and_print` 的类型参数 `T` 的类型
+  |
+  = note: multiple `impl`s satisfying `_: From<i32>` found in the `core` crate:
+          - impl From<i32> for AtomicI32;
+          - impl From<i32> for f64;
+          - impl From<i32> for i128;
+          - impl From<i32> for i64;
+note: required by a bound in `create_and_print`
+ --> src/main.rs:3:35
+  |
+3 | fn create_and_print<T>() where T: From<i32> + Display {
+  |                                   ^^^^^^^^^ required by this bound in `create_and_print`
+help: consider specifying the generic argument // 尝试指定泛型参数
+  |
+9 |     create_and_print::<T>();
+  |                     +++++
+```
+
+报错里说得很清楚，编译器不知道 `T` 到底应该是什么类型。不过好心的编译器已经帮我们列出了满足条件的类型，然后告诉我们解决方法：显式指定类型：`create_and_print::<T>()`。
+
+于是，我们修改代码：
+```rust
+use std::fmt::Display;
+
+fn create_and_print<T>() where T: From<i32> + Display {
+    let a: T = 100.into(); // 创建了类型为 T 的变量 a，它的初始值由 100 转换而来
+    println!("a is: {}", a);
+}
+
+fn main() {
+    create_and_print::<i64>();
+}
+```
+
+即可成功运行。
 
 ## 结构体中使用泛型
 
@@ -304,7 +364,7 @@ fn main() {
     let arr: [i32; 3] = [1, 2, 3];
     display_array(arr);
 
-    let arr: [i32;2] = [1,2];
+    let arr: [i32; 2] = [1, 2];
     display_array(arr);
 }
 ```
@@ -332,7 +392,7 @@ fn main() {
     let arr: [i32; 3] = [1, 2, 3];
     display_array(&arr);
 
-    let arr: [i32;2] = [1,2];
+    let arr: [i32; 2] = [1, 2];
     display_array(&arr);
 }
 ```
@@ -349,7 +409,7 @@ fn main() {
     let arr: [i32; 3] = [1, 2, 3];
     display_array(&arr);
 
-    let arr: [i32;2] = [1,2];
+    let arr: [i32; 2] = [1, 2];
     display_array(&arr);
 }
 ```
@@ -419,7 +479,59 @@ impl IsTrue for Assert<true> {
 
 #### const fn
 
-@todo
+在讨论完 `const` 泛型后，不得不提及另一个与之密切相关且强大的特性：`const fn`，即常量函数。`const fn` 允许我们在编译期对函数进行求值，从而实现更高效、更灵活的代码设计。
+
+##### 为什么需要 const fn
+
+通常情况下，函数是在运行时被调用和执行的。然而，在某些场景下，我们希望在编译期就计算出一些值，以提高运行时的性能或满足某些编译期的约束条件。例如，定义数组的长度、计算常量值等。
+
+有了 `const fn`，我们可以在编译期执行这些函数，从而将计算结果直接嵌入到生成的代码中。这不仅以高了运行时的性能，还使代码更加简洁和安全。
+
+##### const fn 的基本用法
+
+要定义一个常量函数，只需要在函数声明前加上 `const` 关键字。例如：
+
+```rust
+const fn add(a: usize, b: usize) -> usize {
+    a + b
+}
+
+const RESULT: usize = add(5, 10);
+
+fn main() {
+    println!("The result is: {}", RESULT);
+}
+```
+
+##### const fn 的限制
+
+虽然 `const fn` 提供了很多便利，但是由于其在编译期执行，以确保函数能在编译期被安全地求值，因此有一些限制，例如，不可将随机数生成器写成 `const fn`。
+
+无论在编译时还是运行时调用 `const fn`，它们的结果总是相同，即使多次调用也是如此。唯一的例外是，如果你在极端情况下进行复杂的浮点操作，你可能会得到（非常轻微的）不同结果。因此，不建议使 `数组长度 (arr.len())` 和 `Enum判别式` 依赖于浮点计算。
+
+##### 结合 const fn 与 const 泛型
+
+将 `const fn` 与 `const 泛型` 结合，可以实现更加灵活和高效的代码设计。例如，创建一个固定大小的缓冲区结构，其中缓冲区大小由编译期计算确定：
+
+```rust
+struct Buffer<const N: usize> {
+    data: [u8; N],
+}
+
+const fn compute_buffer_size(factor: usize) -> usize {
+    factor * 1024
+}
+
+fn main() {
+    const SIZE: usize = compute_buffer_size(4);
+    let buffer = Buffer::<SIZE> {
+        data: [0; SIZE],
+    };
+    println!("Buffer size: {} bytes", buffer.data.len());
+}
+```
+
+在这个例子中，`compute_buffer_size` 是一个常量函数，它根据传入的 `factor` 计算缓冲区的大小。在 `main` 函数中，我们使用 `compute_buffer_size(4)` 来计算缓冲区大小为 4096 字节，并将其作为泛型参数传递给 `Buffer` 结构体。这样，缓冲区的大小在编译期就被确定下来，避免了运行时的计算开销。
 
 ## 泛型的性能
 
@@ -467,7 +579,7 @@ fn main() {
 ## 课后练习
 
 > Rust By Practice，支持代码在线编辑和运行，并提供详细的习题解答。
-> - [泛型](https://zh.practice.rs/generics-traits/generics.html)
+> - [泛型](https://practice-zh.course.rs/generics-traits/generics.html)
 >     - [习题解答](https://github.com/sunface/rust-by-practice/blob/master/solutions/generics-traits/generics.md)
-> - [const 泛型](https://zh.practice.rs/generics-traits/const-generics.html)
+> - [const 泛型](https://practice-zh.course.rs/generics-traits/const-generics.html)
 >     - [习题解答](https://github.com/sunface/rust-by-practice/blob/master/solutions/generics-traits/const-generics.md)

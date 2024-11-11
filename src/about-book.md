@@ -1,8 +1,8 @@
 <img src="https://github.com/sunface/rust-course/blob/main/assets/banner.jpg?raw=true" />
 
-Rust 语言真的好：连续七年成为全世界最受欢迎的语言、没有 GC 也无需手动内存管理、性能比肩 C++/C 还能直接调用它们的代码、安全性极高 - 总有公司说使用 Rust 后以前的大部分 bug 都将自动消失、全世界最好的包管理工具 Cargo 等等。但...
+Rust 语言真的好：连续八年成为全世界最受欢迎的语言、没有 GC 也无需手动内存管理、性能比肩 C++/C 还能直接调用它们的代码、安全性极高 - 总有公司说使用 Rust 后以前的大部分 bug 都将自动消失、全世界最好的包管理工具 Cargo 等等。但...
 
-**有人说: "Rust 太难了，学了也没用"。**
+**有人说: "Rust 太难了，学了也没用"**
 
 对于后面一句话我们持保留意见，如果以找工作为标准，那国内环境确实还不好，但如果你想成为更优秀的程序员或者是玩转开源，那 Rust 还真是不错的选择，具体原因见[下一章](https://course.rs/into-rust.html)。
 
@@ -12,7 +12,7 @@ Rust 语言真的好：连续七年成为全世界最受欢迎的语言、没有
 
 ## 配套练习题
 
-对于学习编程而言，读一篇文章不如做几道练习题，此话虽然夸张，但是也不无道理。既然如此，即读书又做练习题，效果会不会更好？再加上练习题是书本的配套呢？ :P
+对于学习编程而言，读一篇文章不如做几道练习题，此话虽然夸张，但是也不无道理。既然如此，既读书又做练习题，效果会不会更好？再加上练习题是书本的配套呢？ :P
 
 - [Rust 语言实战](https://github.com/sunface/rust-by-practice), Rust 语言圣经配套习题，支持中英双语，可以在右上角切换
 
@@ -32,35 +32,65 @@ Rust 语言真的好：连续七年成为全世界最受欢迎的语言、没有
 
 最后，能通过开源在茫茫人海中与大家相识，这感觉真好 :D
 
-## 🏅 贡献者
+## 🏆 贡献者
 
 非常感谢本教程的[所有贡献者](https://github.com/sunface/rust-course/graphs/contributors)，正是有了你们，才有了现在的高质量 Rust 教程!
 
 <br />
 
-**🏆 贡献榜前三**(根据难易度、贡献次数、活跃度综合评定):
+🏆
 
 <table>
     <tr>
-        <td align="center" width="25%">
-            <a href="https://github.com/sunface">
-                <img src="https://avatars.githubusercontent.com/u/7036754?v=4?s=100"   alt=""/>
+        <td align="center">
+            <a href="https://github.com/EluvK">
+                <img src="https://avatars.githubusercontent.com/u/36977935?v=4" width="160px" alt=""/>
                 <br />
-                <sub><b>Sunface 🥇</b></sub>
+                <sub><b>EluvK</b></sub>
             </a>
         </td>
-        <td align="center" width="25%">
+        <td align="center">
             <a href="https://github.com/AllanDowney">
-                <img src="https://avatars.githubusercontent.com/u/82752697?v=4?s=100"   alt=""/>
+                <img src="https://avatars.githubusercontent.com/u/82752697?v=4?s=100"  width="160px" alt=""/>
                 <br />
-                <sub><b>AllanDowney 🥈</b></sub>
+                <sub><b>AllanDowney</b></sub>
             </a>
         </td>
-        <td align="center" width="25%">
+    </tr>
+</table>
+
+<br />
+
+🏅
+
+<table>
+    <tr>
+        <td align="center">
+            <a href="https://github.com/JesseAtSZ">
+                <img src="https://avatars.githubusercontent.com/u/35264598?v=4?s=100" width="100px" alt=""/>
+                <br />
+                <sub><b>JesseAtSZ</b></sub>
+            </a>
+        </td>
+        <td align="center">
             <a href="https://github.com/Rustln">
-                <img src="https://avatars.githubusercontent.com/u/100085326?v=4?s=100" alt=""/>
+                <img src="https://avatars.githubusercontent.com/u/100085326?v=4?s=100" width="100px" alt=""/>
                 <br />
                 <sub><b>Rustln</b></sub>
+            </a>
+        </td>
+        <td align="center">
+            <a href="https://github.com/1132719438">
+                <img src="https://avatars.githubusercontent.com/u/10138791?v=4?s=100" width="100px" alt=""/>
+                <br />
+                <sub><b>1132719438</b></sub>
+            </a>
+        </td>
+        <td align="center">
+            <a href="https://github.com/zongzi531">
+                <img src="https://avatars.githubusercontent.com/u/22429236?v=4?s=100" width="100px" alt=""/>
+                <br />
+                <sub><b>zongzi531</b></sub>
             </a>
         </td>
     </tr>

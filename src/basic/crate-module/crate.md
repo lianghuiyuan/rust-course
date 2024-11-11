@@ -9,7 +9,7 @@
 
 ## 定义
 
-其实项目 `Package` 和包 `Crate` 很容易被搞混，甚至在很多书中，这两者都是不分的，但是由于官方对此做了明确的区分，因此我们会在本章节中试图(挣扎着)理清这个概念。
+其实项目 `Package` 和包 `Crate` 很容易被搞混，甚至在很多书中，这两者都是不分的，但是由于官方对此做了明确的区分，因此我们会在本章节中试图（挣扎着）理清这个概念。
 
 #### 包 Crate
 
@@ -72,7 +72,7 @@ error: a bin target must be available for `cargo run`
 
 看完上面，相信大家看出来为何 `Package` 和包容易被混淆了吧？因为你用 `cargo new` 创建的 `Package` 和它其中包含的包是同名的！
 
-不过，只要你牢记 `Package` 是一个项目工程，而包只是一个编译单元，基本上也就不会混淆这个两个概念了：`src/main.rs` 和 `src/lib.rs` 都是编译单元，因此它们都是包。
+不过，只要你牢记 `Package` 是一个项目工程，而包只是一个编译单元，也就不会再混淆这两个概念：`src/main.rs` 和 `src/lib.rs` 都是编译单元，因此它们都是包。
 
 #### 典型的 `Package` 结构
 
@@ -111,4 +111,4 @@ error: a bin target must be available for `cargo run`
 
 ## 课后练习
 
-> [Rust By Practice](https://zh.practice.rs/crate-module/crate.html)，支持代码在线编辑和运行，并提供详细的[习题解答](https://github.com/sunface/rust-by-practice/blob/master/solutions/crate-module/crate.md)。
+> [Rust By Practice](https://practice-zh.course.rs/crate-module/crate.html)，支持代码在线编辑和运行，并提供详细的[习题解答](https://github.com/sunface/rust-by-practice/blob/master/solutions/crate-module/crate.md)。

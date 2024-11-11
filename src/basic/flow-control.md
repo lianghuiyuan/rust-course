@@ -8,7 +8,7 @@
 
 > if else 无处不在 -- 鲁迅
 
-但凡你能找到一门编程语言没有 `if else`，那么一定更要反馈给鲁迅，反正不是我说的:) 总之，只要你拥有其它语言的编程经验，就一定会有以下认知：`if else` **表达式**根据条件执行不同的代码分支：
+但凡你能找到一门编程语言没有 `if else`，那么一定更要反馈给鲁迅，反正不是我说的 :) 总之，只要你拥有其它语言的编程经验，就一定会有以下认知：`if else` **表达式**根据条件执行不同的代码分支：
 
 ```rust
 if condition == true {
@@ -38,7 +38,7 @@ fn main() {
 以上代码有以下几点要注意：
 
 - **`if` 语句块是表达式**，这里我们使用 `if` 表达式的返回值来给 `number` 进行赋值：`number` 的值是 `5`
-- 用 `if` 来赋值时，要保证每个分支返回的类型一样(事实上，这种说法不完全准确，见[这里](https://course.rs/appendix/expressions.html#if表达式))，此处返回的 `5` 和 `6` 就是同一个类型，如果返回类型不一致就会报错
+- 用 `if` 来赋值时，要保证每个分支返回的类型一样（事实上，这种说法不完全准确，见[这里](https://course.rs/appendix/expressions.html#if表达式)），此处返回的 `5` 和 `6` 就是同一个类型，如果返回类型不一致就会报错
 
 ```console
 error[E0308]: if and else have incompatible types
@@ -118,7 +118,7 @@ for item in &container {
 }
 ```
 
-> 对于实现了 `copy` 特征的数组(例如 [i32; 10] )而言， `for item in arr` 并不会把 `arr` 的所有权转移，而是直接对其进行了拷贝，因此循环之后仍然可以使用 `arr` 。
+> 对于实现了 `copy` 特征的数组（例如 [i32; 10]）而言， `for item in arr` 并不会把 `arr` 的所有权转移，而是直接对其进行了拷贝，因此循环之后仍然可以使用 `arr` 。
 
 如果想在循环中，**修改该元素**，可以使用 `mut` 关键字：
 
@@ -179,7 +179,7 @@ for item in collection {
 第一种方式是循环索引，然后通过索引下标去访问集合，第二种方式是直接循环集合中的元素，优劣如下：
 
 - **性能**：第一种使用方式中 `collection[index]` 的索引访问，会因为边界检查(Bounds Checking)导致运行时的性能损耗 —— Rust 会检查并确认 `index` 是否落在集合内，但是第二种直接迭代的方式就不会触发这种检查，因为编译器会在编译时就完成分析并证明这种访问是合法的
-- **安全**：第一种方式里对 `collection` 的索引访问是非连续的，存在一定可能性在两次访问之间，`collection` 发生了变化，导致脏数据产生。而第二种直接迭代的方式是连续访问，因此不存在这种风险（这里是因为所有权吗？是的话可能要强调一下）
+- **安全**：第一种方式里对 `collection` 的索引访问是非连续的，存在一定可能性在两次访问之间，`collection` 发生了变化，导致脏数据产生。而第二种直接迭代的方式是连续访问，因此不存在这种风险( 由于所有权限制，在访问过程中，数据并不会发生变化)。
 
 由于 `for` 循环无需任何条件限制，也不需要通过索引来访问，因此是最安全也是最常用的，通过与下面的 `while` 的对比，我们能看到为什么 `for` 会更加安全。
 
@@ -370,4 +370,4 @@ fn main() {
 
 ## 课后练习
 
-> [Rust By Practice](https://zh.practice.rs/flow-control.html)，支持代码在线编辑和运行，并提供详细的[习题解答](https://github.com/sunface/rust-by-practice/blob/master/solutions/flow-control.md)。
+> [Rust By Practice](https://practice-zh.course.rs/flow-control.html)，支持代码在线编辑和运行，并提供详细的[习题解答](https://github.com/sunface/rust-by-practice/blob/master/solutions/flow-control.md)。

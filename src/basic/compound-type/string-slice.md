@@ -49,7 +49,7 @@ let world = &s[6..11];
 
 `hello` 没有引用整个 `String s`，而是引用了 `s` 的一部分内容，通过 `[0..5]` 的方式来指定。
 
-这就是创建切片的语法，使用方括号包括的一个序列：**[开始索引..终止索引]**，其中开始索引是切片中第一个元素的索引位置，而终止索引是最后一个元素后面的索引位置，也就是这是一个 `右半开区间`。在切片数据结构内部会保存开始的位置和切片的长度，其中长度是通过 `终止索引` - `开始索引` 的方式计算得来的。
+这就是创建切片的语法，使用方括号包括的一个序列：**[开始索引..终止索引]**，其中开始索引是切片中第一个元素的索引位置，而终止索引是最后一个元素后面的索引位置。换句话说，这是一个 `右半开区间`（或称为左闭右开区间）——指的是在区间的左端点是包含在内的，而右端点是不包含在内的。在切片数据结构内部会保存开始的位置和切片的长度，其中长度是通过 `终止索引` - `开始索引` 的方式计算得来的。
 
 对于 `let world = &s[6..11];` 来说，`world` 是一个切片，该切片的指针指向 `s` 的第 7 个字节(索引从 0 开始, 6 是第 7 个字节)，且该切片的长度是 `5` 个字节。
 
@@ -95,9 +95,9 @@ let slice = &s[..];
 > ```
 >
 > 因为我们只取 `s` 字符串的前两个字节，但是本例中每个汉字占用三个字节，因此没有落在边界处，也就是连 `中` 字都取不完整，此时程序会直接崩溃退出，如果改成 `&s[0..3]`，则可以正常通过编译。
-> 因此，当你需要对字符串做切片索引操作时，需要格外小心这一点, 关于该如何操作 UTF-8 字符串，参见[这里](#操作-utf-8-字符串)。
+> 因此，当你需要对字符串做切片索引操作时，需要格外小心这一点，关于该如何操作 UTF-8 字符串，参见[这里](#操作-utf-8-字符串)。
 
-字符串切片的类型标识是 `&str`，因此我们可以这样声明一个函数，输入 `String` 类型，返回它的切片: `fn first_word(s: &String) -> &str `。
+字符串切片的类型标识是 `&str`，因此我们可以这样声明一个函数，输入 `String` 类型，返回它的切片：`fn first_word(s: &String) -> &str `。
 
 有了切片就可以写出这样的代码：
 
@@ -152,7 +152,7 @@ assert_eq!(slice, &[2, 3]);
 
 ## 字符串字面量是切片
 
-之前提到过字符串字面量,但是没有提到它的类型：
+之前提到过字符串字面量，但是没有提到它的类型：
 
 ```rust
 let s = "Hello, world!";
@@ -176,7 +176,7 @@ Rust 在语言级别，只有一种字符串类型： `str`，它通常是以引
 
 `str` 类型是硬编码进可执行文件，也无法被修改，但是 `String` 则是一个可增长、可改变且具有所有权的 UTF-8 编码字符串，**当 Rust 用户提到字符串时，往往指的就是 `String` 类型和 `&str` 字符串切片类型，这两个类型都是 UTF-8 编码**。
 
-除了 `String` 类型的字符串，Rust 的标准库还提供了其他类型的字符串，例如 `OsString`， `OsStr`， `CsString` 和` CsStr` 等，注意到这些名字都以 `String` 或者 `Str` 结尾了吗？它们分别对应的是具有所有权和被借用的变量。
+除了 `String` 类型的字符串，Rust 的标准库还提供了其他类型的字符串，例如 `OsString`， `OsStr`， `CsString` 和 `CsStr` 等，注意到这些名字都以 `String` 或者 `Str` 结尾了吗？它们分别对应的是具有所有权和被借用的变量。
 
 ## String 与 &str 的转换
 
@@ -394,11 +394,12 @@ string_replace_range = "I like Rust!"
 
 #### 删除 (Delete)
 
-与字符串删除相关的方法有 4 个，他们分别是 `pop()`，`remove()`，`truncate()`，`clear()`。这四个方法仅适用于 `String` 类型。
+与字符串删除相关的方法有 4 个，它们分别是 `pop()`，`remove()`，`truncate()`，`clear()`。这四个方法仅适用于 `String` 类型。
 
 1、 `pop` —— 删除并返回字符串的最后一个字符
 
 **该方法是直接操作原来的字符串**。但是存在返回值，其返回值是一个 `Option` 类型，如果字符串为空，则返回 `None`。
+
 示例代码如下：
 
 ```rust
@@ -498,7 +499,7 @@ string_clear = ""
 
 1、使用 `+` 或者 `+=` 连接字符串
 
-使用 `+` 或者 `+=` 连接字符串，要求右边的参数必须为字符串的切片引用（Slice）类型。其实当调用 `+` 的操作符时，相当于调用了 `std::string` 标准库中的 [`add()`](https://doc.rust-lang.org/std/string/struct.String.html#method.add) 方法，这里 `add()` 方法的第二个参数是一个引用的类型。因此我们在使用 `+`， 必须传递切片引用类型。不能直接传递 `String` 类型。**`+` 和 `+=` 都是返回一个新的字符串。所以变量声明可以不需要 `mut` 关键字修饰**。
+使用 `+` 或者 `+=` 连接字符串，要求右边的参数必须为字符串的切片引用（Slice）类型。其实当调用 `+` 的操作符时，相当于调用了 `std::string` 标准库中的 [`add()`](https://doc.rust-lang.org/std/string/struct.String.html#method.add) 方法，这里 `add()` 方法的第二个参数是一个引用的类型。因此我们在使用 `+` 时， 必须传递切片引用类型。不能直接传递 `String` 类型。**`+` 是返回一个新的字符串，所以变量声明可以不需要 `mut` 关键字修饰**。
 
 示例代码如下：
 
@@ -508,7 +509,7 @@ fn main() {
     let string_rust = String::from("rust");
     // &string_rust会自动解引用为&str
     let result = string_append + &string_rust;
-    let mut result = result + "!";
+    let mut result = result + "!"; // `result + "!"` 中的 `result` 是不可变的
     result += "!!!";
 
     println!("连接字符串 + -> {}", result);
@@ -600,6 +601,7 @@ fn main() {
     );
 
     // 换行了也会保持之前的字符串格式
+    // 使用\忽略换行符
     let long_string = "String literals
                         can span multiple lines.
                         The linebreak and indentation here ->\
@@ -619,7 +621,7 @@ fn main() {
     let quotes = r#"And then I said: "There is no escape!""#;
     println!("{}", quotes);
 
-    // 如果还是有歧义，可以继续增加，没有限制
+    // 如果字符串中包含 # 号，可以在开头和结尾加多个 # 号，最多加255个，只需保证与字符串中连续 # 号的个数不超过开头和结尾的 # 号的个数即可
     let longer_delimiter = r###"A string with "# in it. And even "##!"###;
     println!("{}", longer_delimiter);
 }
@@ -682,7 +684,7 @@ for b in "中国人".bytes() {
 
 那么问题来了，为啥 `String` 可变，而字符串字面值 `str` 却不可以？
 
-就字符串字面值来说，我们在编译时就知道其内容，最终字面值文本被直接硬编码进可执行文件中，这使得字符串字面值快速且高效，这主要得益于字符串字面值的不可变性。不幸的是，我们不能为了获得这种性能，而把每一个在编译时大小未知的文本都放进内存中（你也做不到！），因为有的字符串是在程序运行得过程中动态生成的。
+就字符串字面值来说，我们在编译时就知道其内容，最终字面值文本被直接硬编码进可执行文件中，这使得字符串字面值快速且高效，这主要得益于字符串字面值的不可变性。不幸的是，我们不能为了获得这种性能，而把每一个在编译时大小未知的文本都放进内存中（你也做不到！），因为有的字符串是在程序运行的过程中动态生成的。
 
 对于 `String` 类型，为了支持一个可变、可增长的文本片段，需要在堆上分配一块在编译时未知大小的内存来存放内容，这些都是在程序运行时完成的：
 
@@ -704,19 +706,19 @@ for b in "中国人".bytes() {
                                    // s 不再有效，内存被释放
 ```
 
-与其它系统编程语言的 `free` 函数相同，Rust 也提供了一个释放内存的函数： `drop`，但是不同的是，其它语言要手动调用 `free` 来释放每一个变量占用的内存，而 Rust 则在变量离开作用域时，自动调用 `drop` 函数: 上面代码中，Rust 在结尾的 `}` 处自动调用 `drop`。
+与其它系统编程语言的 `free` 函数相同，Rust 也提供了一个释放内存的函数： `drop`，但是不同的是，其它语言要手动调用 `free` 来释放每一个变量占用的内存，而 Rust 则在变量离开作用域时，自动调用 `drop` 函数：上面代码中，Rust 在结尾的 `}` 处自动调用 `drop`。
 
-> 其实，在 C++ 中，也有这种概念: _Resource Acquisition Is Initialization (RAII)_。如果你使用过 RAII 模式的话应该对 Rust 的 `drop` 函数并不陌生。
+> 其实，在 C++ 中，也有这种概念：_Resource Acquisition Is Initialization (RAII)_。如果你使用过 RAII 模式的话应该对 Rust 的 `drop` 函数并不陌生。
 
 这个模式对编写 Rust 代码的方式有着深远的影响，在后面章节我们会进行更深入的介绍。
 
 ## 课后练习
 > Rust By Practice，支持代码在线编辑和运行，并提供详细的习题解答。
-> - [字符串](https://zh.practice.rs/compound-types/string.html)
+> - [字符串](https://practice-zh.course.rs/compound-types/string.html)
 >     - [习题解答](https://github.com/sunface/rust-by-practice/blob/master/solutions/compound-types/string.md)
-> - [切片](https://zh.practice.rs/compound-types/slice.html)
+> - [切片](https://practice-zh.course.rs/compound-types/slice.html)
 >     - [习题解答](https://github.com/sunface/rust-by-practice/blob/master/solutions/compound-types/slice.md)
-> - [String](https://zh.practice.rs/collections/String.html)
+> - [String](https://practice-zh.course.rs/collections/string.html)
 >     - [习题解答](https://github.com/sunface/rust-by-practice/blob/master/solutions/collections/String.md)
 
 <hr />

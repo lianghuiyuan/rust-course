@@ -310,7 +310,7 @@ fn main() {
 
 ## 特征定义中的特征约束
 
-有时，我们会需要让某个特征 A 能使用另一个特征 B 的功能(另一种形式的特征约束)，这种情况下，不仅仅要为类型实现特征 A，还要为类型实现特征 B 才行，这就是 `supertrait` (实在不知道该如何翻译，有大佬指导下嘛？)
+有时，我们会需要让某个特征 A 能使用另一个特征 B 的功能(另一种形式的特征约束)，这种情况下，不仅仅要为类型实现特征 A，还要为类型实现特征 B 才行，这就是基特征( super trait )。
 
 例如有一个特征 `OutlinePrint`，它有一个方法，能够对当前的实现类型进行格式化输出：
 
@@ -427,4 +427,4 @@ fn main() {
 
 ## 课后练习
 
-> [Rust By Practice](https://zh.practice.rs/generics-traits/advanced-traits.html)，支持代码在线编辑和运行，并提供详细的[习题解答](https://github.com/sunface/rust-by-practice/blob/master/solutions/generics-traits/advanced-trait.md)。
+> [Rust By Practice](https://practice-zh.course.rs/generics-traits/advanced-traits.html)，支持代码在线编辑和运行，并提供详细的[习题解答](https://github.com/sunface/rust-by-practice/blob/master/solutions/generics-traits/advanced-trait.md)。

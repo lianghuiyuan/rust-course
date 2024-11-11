@@ -13,7 +13,7 @@ fn main() {
 }
 ```
 
-上面的代码展示了非常简单的闭包 `sum`，它拥有一个入参 `y`，同时捕获了作用域中的 `x` 的值，因此调用 `sum(2)` 意味着将 2（参数 `y`）跟 1（`x`）进行相加,最终返回它们的和：`3`。
+上面的代码展示了非常简单的闭包 `sum`，它拥有一个入参 `y`，同时捕获了作用域中的 `x` 的值，因此调用 `sum(2)` 意味着将 2（参数 `y`）跟 1（`x`）进行相加，最终返回它们的和：`3`。
 
 可以看到 `sum` 非常符合闭包的定义：可以赋值给变量，允许捕获调用者作用域中的值。
 
@@ -303,7 +303,7 @@ where
 }
 ```
 
-上面的缓存有一个很大的问题：只支持 `u32` 类型的值，若我们想要缓存 `&str` 类型，显然就行不通了，因此需要将 `u32` 替换成泛型 `E`，该练习就留给读者自己完成，具体代码可以参考[这里](https://practice.rs/functional-programing/cloure.html#closure-in-structs)
+上面的缓存有一个很大的问题：只支持 `u32` 类型的值，若我们想要缓存 `&str` 类型，显然就行不通了，因此需要将 `u32` 替换成泛型 `E`，该练习就留给读者自己完成，具体代码可以参考[这里](https://practice-zh.course.rs/functional-programing/closure.html#closure-in-structs)
 
 ## 捕获作用域中的值
 
@@ -490,7 +490,49 @@ fn exec<'a, F: FnMut(&'a str)>(mut f: F)  {
 }
 ```
 
-这段代码非常清晰的说明了 `update_string` 实现了 `FnMut` 特征
+这段代码中`update_string`没有使用mut关键字修饰，而上文提到想要在闭包内部捕获可变借用，需要用关键词把该闭包声明为可变类型。我们确实这么做了———`exec(mut f: F)`表明我们的`exec`接收的是一个可变类型的闭包。这段代码中`update_string`看似被声明为不可变闭包，但是`exec(mut f: F)`函数接收的又是可变参数，为什么可以正常执行呢？
+
+rust不可能接受类型不匹配的形参和实参通过编译，我们提供的实参又是可变的，这说明`update_string`一定是一个可变类型的闭包，我们不妨看看rust-analyzer自动给出的类型标注：
+
+```rust
+    let mut s: String = String::new();
+
+    let update_string: impl FnMut(&str) =  |str| s.push_str(str);
+```
+
+rust-analyzer给出的类型标注非常清晰的说明了 `update_string` 实现了 `FnMut` 特征。
+
+为什么`update_string`没有用`mut`修饰却是一个可变类型的闭包？事实上，`FnMut`只是trait的名字，声明变量为`FnMut`和要不要mut没啥关系，`FnMut`是推导出的特征类型，`mut`是rust语言层面的一个修饰符，用于声明一个绑定是可变的。Rust从特征类型系统和语言修饰符两方面保障了我们的程序正确运行。
+
+我们在使用`FnMut`类型闭包时需要捕获外界的可变借用，因此我们常常搭配`mut`修饰符使用。但我们要始终记住，二者是相互独立的。
+
+因此，让我们再回头分析一下这段代码：在`main`函数中，首先创建了一个可变的字符串`s`，然后定义了一个可变类型闭包`update_string`，该闭包接受一个字符串参数并将其追加到`s`中。接下来调用了`exec`函数，并将`update_string`闭包的所有权移交给它。最后打印出了字符串`s`的内容。
+
+细心的读者可能注意到，我们在上文的分析中提到`update_string`闭包的所有权被移交给了`exec`函数。这说明`update_string`没有实现`Copy`特征，但并不是所有闭包都没有实现`Copy`特征，闭包自动实现`Copy`特征的规则是，只要闭包捕获的类型都实现了`Copy`特征的话，这个闭包就会默认实现`Copy`特征。
+
+我们来看一个例子：
+
+```rust
+let s = String::new();
+let update_string =  || println!("{}",s);
+```
+
+这里取得的是`s`的不可变引用，所以是能`Copy`的。而如果拿到的是`s`的所有权或可变引用，都是不能`Copy`的。我们刚刚的代码就属于第二类，取得的是`s`的可变引用，没有实现`Copy`。
+
+```rust
+// 拿所有权
+let s = String::new();
+let update_string = move || println!("{}", s);
+
+exec(update_string);
+// exec2(update_string); // 不能再用了
+
+// 可变引用
+let mut s = String::new();
+let mut update_string = || s.push_str("hello");
+exec(update_string);
+// exec1(update_string); // 不能再用了
+```
 
 3. `Fn` 特征，它以不可变借用的方式捕获环境中的值
    让我们把上面的代码中 `exec` 的 `F` 泛型参数类型修改为 `Fn(&'a str)`：
@@ -549,7 +591,7 @@ fn exec<'a, F: Fn(String) -> ()>(f: F)  {
 
 #### move 和 Fn
 
-在上面，我们讲到了 `move` 关键字对于 `FnOnce` 特征的重要性，但是实际上使用了 `move` 的闭包依然可能实现了 `Fn` 或 `FnMut` 特征。
+在上面，我们讲到了 `move` 关键字对于 `FnOnce` 特征的重要性，但是实际上使用了 `move` 的闭包依然可以使用 `Fn` 或 `FnMut` 特征。
 
 因为，**一个闭包实现了哪种 Fn 特征取决于该闭包如何使用被捕获的变量，而不是取决于闭包如何捕获它们**。`move` 本身强调的就是后者，闭包如何捕获变量：
 
@@ -567,9 +609,9 @@ fn exec<F: FnOnce()>(f: F)  {
 }
 ```
 
-我们在上面的闭包中使用了 `move` 关键字，所以我们的闭包捕获了它，但是由于闭包对 `s` 的使用仅仅是不可变借用，因此该闭包实际上**还**实现了 `Fn` 特征。
+我们在上面的闭包中使用了 `move` 关键字，所以我们的闭包捕获了它，但是由于闭包获取了 `s` 的所有权，因此该闭包实现了 `FnOnce` 的特征。
 
-细心的读者肯定发现我在上段中使用了一个 `还` 字，这是什么意思呢？因为该闭包不仅仅实现了 `FnOnce` 特征，还实现了 `Fn` 特征，将代码修改成下面这样，依然可以编译：
+但是假如我们将代码修改成下面这样，依然可以编译：
 
 ```rust
 fn main() {
@@ -584,6 +626,8 @@ fn exec<F: Fn()>(f: F)  {
     f()
 }
 ```
+
+奇怪， 明明是闭包实现的是 `FnOnce` 的特征， 为什么编译器居然允许 `Fn` 特征通过编译呢？
 
 #### 三种 Fn 的关系
 
@@ -768,5 +812,6 @@ fn factory(x:i32) -> Box<dyn Fn(i32) -> i32> {
 
 这块儿内容在进阶生命周期章节中有讲，这里就不再赘述，读者可移步[此处](https://course.rs/advance/lifetime/advance.html#闭包函数的消除规则)进行回顾。
 
+## 课后习题
 
-{{#include ../../practice.md}}
+> [Rust By Practice](https://practice-zh.course.rs/functional-programing/closure.html)，支持代码在线编辑和运行，并提供详细的[习题解答](https://github.com/sunface/rust-by-practice/blob/master/solutions/functional-programing/closure.md)。
